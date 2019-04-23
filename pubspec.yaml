@@ -1,7 +1,7 @@
 name: flutter_app_host
 description: Quickly distribute your Flutter app to testers or enterprise users by uploading it to the AppHost hosting service
 version: 0.1.1
-author: AppHost
+author: AppHost <support@appho.st>
 homepage: https://github.com/apphost-plugins/flutter_app_host
 
 environment:
