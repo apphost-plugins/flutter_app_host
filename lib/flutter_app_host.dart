@@ -8,14 +8,41 @@ import 'package:http/http.dart' as http;
 final ANDROID_BASE_PATH = p.join('build', 'app', 'outputs', 'apk');
 
 void main(List<String> arguments) async {
-  if (arguments.length == 1) {
+  if (arguments.length >= 2) {
+    if ((arguments[0] != 'apk') && (arguments[0] != 'ipa')) {
+      print('Manual upload type (first argument) must be "apk" or "ipa".');
+      return;
+    }
+    final platform = (arguments[0] == 'apk') ? 'android' : 'ios';
+    final version = arguments[1];
+    if (arguments.length < 3) {
+      print('Manual upload must specify filename argument.');
+      return;
+    }
+    final filename = arguments[2];
+    if (!(await File(filename).exists())) {
+      print('Could not find file at ${filename}');
+      return;
+    }
+    if ((platform == 'ios') && (arguments.length == 4)) {
+      final ios_bundle_id = arguments[3];
+      await do_upload(platform, filename, version, ios_bundle_id);
+    } else {
+      await do_upload(platform, filename, version);
+    }
+  } else if (arguments.length == 1) {
     if (arguments[0] == 'apk-release') {
       await do_android_upload('release');
     } else if (arguments[0] == 'apk-debug') {
       await do_android_upload('debug');
     } else {
-      print(
-          'Upload type must be "apk-release" or "apk-debug". Try the command without arguments to see options.');
+      if ((arguments[0] == 'apk') || (arguments[0] == 'ipa')) {
+        print('Manual upload must specify app version and filename arguments.');
+      } else {
+        print(
+            'Upload type must be "apk-release", "apk-debug", "apk", or "ipa". Try the command without arguments to see options.');
+      }
+      return;
     }
   } else {
     print('Found the following application builds:');
@@ -81,7 +108,8 @@ get_config() async {
   return settings;
 }
 
-void do_upload(String platform, String file_path, String version) async {
+void do_upload(String platform, String file_path, String version,
+    [String ios_bundle_id]) async {
   final file_to_upload = File(file_path);
   var settings = await get_config();
   Map<String, String> url_params = {
@@ -91,6 +119,17 @@ void do_upload(String platform, String file_path, String version) async {
     'platform': platform,
     'version': version
   };
+  if (platform == 'ios') {
+    if ((ios_bundle_id == null) &&
+        (settings.containsKey('ios_bundle_identifier')))
+      ios_bundle_id = settings.ios_bundle_identifier;
+    if (ios_bundle_id == null) {
+      print(
+          'Error: iOS bundle identifier must be specified as an argument, or included in your ".apphost" config file.');
+      return;
+    }
+    url_params['ios_bundle_identifier'] = ios_bundle_id;
+  }
   var uri = Uri.https('appho.st', 'api/get_upload_url', url_params);
   print('Fetching upload URL...');
   var response = await http.get(uri);
