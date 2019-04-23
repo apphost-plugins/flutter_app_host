@@ -1,3 +1,7 @@
+## [0.2.1] - April 23, 2019
+
+* Include a few examples
+
 ## [0.2.0] - April 23, 2019
 
 * Allow manual file uploads (necessary for iOS app packages)
