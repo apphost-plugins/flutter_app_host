@@ -14,7 +14,8 @@ void main(List<String> arguments) async {
     } else if (arguments[0] == 'apk-debug') {
       await do_android_upload('debug');
     } else {
-      print('Upload type must be "apk-release" or "apk-debug". Try the command without arguments to see options.');
+      print(
+          'Upload type must be "apk-release" or "apk-debug". Try the command without arguments to see options.');
     }
   } else {
     print('Found the following application builds:');
@@ -23,20 +24,22 @@ void main(List<String> arguments) async {
       final release_version = release_info['apkInfo']['versionName'];
       print('\n* Android: release build, version ${release_version}');
       print('>> flutter packages pub run flutter_app_host apk-release');
-    } catch(e) {}
+    } catch (e) {}
     try {
       final debug_info = await get_android_build_info('debug');
       final debug_version = debug_info['apkInfo']['versionName'];
       print('\n* Android: debug build, version ${debug_version}');
       print('>> flutter packages pub run flutter_app_host apk-debug');
-    } catch(e) {}
+    } catch (e) {}
 
     print('\nManually upload Android build archives (.apk file):');
-    print('>> flutter packages pub run flutter_app_host apk <version> <filename>');
+    print(
+        '>> flutter packages pub run flutter_app_host apk <version> <filename>');
 
     print('\nManually upload iOS build archives (.ipa file):');
     print('https://flutter.dev/docs/deployment/ios#create-a-build-archive');
-    print('>> flutter packages pub run flutter_app_host ipa <version> <filename> <ios_bundle_identifier>');
+    print(
+        '>> flutter packages pub run flutter_app_host ipa <version> <filename> <ios_bundle_identifier>');
 
     print('');
   }
@@ -81,7 +84,7 @@ get_config() async {
 void do_upload(String platform, String file_path, String version) async {
   final file_to_upload = File(file_path);
   var settings = await get_config();
-  Map<String,String> url_params = {
+  Map<String, String> url_params = {
     'user_id': settings['user_id'],
     'app_id': settings['app_id'],
     'key': settings['key'],
@@ -98,7 +101,8 @@ void do_upload(String platform, String file_path, String version) async {
   print('Uploading file...');
   final stream_request = http.StreamedRequest('PUT', Uri.parse(upload_url));
   stream_request.headers['Content-Type'] = 'application/octet-stream';
-  stream_request.headers['Content-Length'] = (await file_to_upload.length()).toString();
+  stream_request.headers['Content-Length'] =
+      (await file_to_upload.length()).toString();
 
   file_to_upload.openRead().listen((chunk) {
     stream_request.sink.add(chunk);
