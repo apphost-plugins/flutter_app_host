@@ -1,4 +1,4 @@
-import 'package:flutter_app_host/main.dart' as FlutterAppHost;
+import 'package:flutter_app_host' as FlutterAppHost;
 
 main(List<String> arguments) {
   FlutterAppHost.main(arguments);
