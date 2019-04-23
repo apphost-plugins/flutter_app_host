@@ -1,0 +1,12 @@
+name: flutter_app_host
+description: Quickly distribute your Flutter app to testers or enterprise users by uploading it to the AppHost hosting service
+version: 0.1.0
+author: AppHost
+homepage:
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  path: "^1.6.2"
+  http: "^0.12.0+2"
