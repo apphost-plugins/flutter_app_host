@@ -47,15 +47,15 @@ void main(List<String> arguments) async {
   } else {
     print('Found the following application builds:');
     try {
-      final release_info = await get_android_build_info('release');
-      final release_version = release_info['apkInfo']['versionName'];
-      print('\n* Android: release build, version ${release_version}');
+      final Map release_info = await get_android_build_info('release');
+      final releaseVersion = getAndroidVersion(release_info);
+      print('\n* Android: release build, version ${releaseVersion}');
       print('>> flutter packages pub run flutter_app_host apk-release');
     } catch (e) {}
     try {
       final debug_info = await get_android_build_info('debug');
-      final debug_version = debug_info['apkInfo']['versionName'];
-      print('\n* Android: debug build, version ${debug_version}');
+      final debugVersion = getAndroidVersion(debug_info);
+      print('\n* Android: debug build, version ${debugVersion}');
       print('>> flutter packages pub run flutter_app_host apk-debug');
     } catch (e) {}
 
@@ -72,6 +72,12 @@ void main(List<String> arguments) async {
   }
 }
 
+String getAndroidVersion(Map releaseInfo) {
+  if (releaseInfo.containsKey('apkInfo')) return releaseInfo['apkInfo']['versionName'];
+  else if (releaseInfo.containsKey('apkData')) return releaseInfo['apkData']['versionName'];
+  return null;
+}
+
 do_android_upload(build_type) async {
   var build_info;
   try {
@@ -81,7 +87,7 @@ do_android_upload(build_type) async {
     return;
   }
   final file_path = p.join(ANDROID_BASE_PATH, build_type, build_info['path']);
-  await do_upload('android', file_path, build_info['apkInfo']['versionName']);
+  await do_upload('android', file_path, getAndroidVersion(build_info));
 }
 
 get_android_build_info(dir_name) async {
