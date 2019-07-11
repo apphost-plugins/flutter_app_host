@@ -1,3 +1,7 @@
+## [0.2.2] - April 23, 2019
+
+* Fix parsing of Android releases
+
 ## [0.2.1] - April 23, 2019
 
 * Include a few examples
