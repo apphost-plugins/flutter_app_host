@@ -1,3 +1,7 @@
+## [0.4.0] - March 3, 2023
+
+* Migrate to null safety
+
 ## [0.3.0] - April 23, 2019
 
 * Update to null safety
