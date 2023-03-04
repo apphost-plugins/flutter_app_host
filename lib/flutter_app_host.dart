@@ -72,7 +72,7 @@ void main(List<String> arguments) async {
   }
 }
 
-String getAndroidVersion(Map releaseInfo) {
+String? getAndroidVersion(Map releaseInfo) {
   if (releaseInfo.containsKey('apkInfo')) return releaseInfo['apkInfo']['versionName'];
   else if (releaseInfo.containsKey('apkData')) return releaseInfo['apkData']['versionName'];
   return null;
@@ -114,11 +114,11 @@ get_config() async {
   return settings;
 }
 
-void do_upload(String platform, String file_path, String version,
-    [String ios_bundle_id]) async {
+Future<void> do_upload(String platform, String file_path, String? version,
+    [String? ios_bundle_id]) async {
   final file_to_upload = File(file_path);
   var settings = await get_config();
-  Map<String, String> url_params = {
+  Map<String, String?> url_params = {
     'user_id': settings['user_id'],
     'app_id': settings['app_id'],
     'key': settings['key'],
