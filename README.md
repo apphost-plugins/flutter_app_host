@@ -11,7 +11,7 @@ Upload your latest Android release build to hosting:
 Result:
 
 ```
-Upload complete! Install your app from:
+Upload complete! Install your app from
 
 https://appho.st/d/#/d3Yg88ve
 ```
