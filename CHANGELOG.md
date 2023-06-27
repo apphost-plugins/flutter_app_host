@@ -1,3 +1,7 @@
+## [0.5.0] - June 26, 2023
+
+* Upgrade to Dart 3
+
 ## [0.4.0] - March 3, 2023
 
 * Migrate to null safety
